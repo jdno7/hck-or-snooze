@@ -33,4 +33,34 @@ function updateNavOnLogin() {
   $navLogin.hide();
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
+  $('.nav-left').show();
 }
+
+// when a user clicks on the nav Submit link we show ad-story-form
+
+function navSubmitClick(evt){
+  // console.debug('navSubmitClick' evt)
+  $adStoryForm.show();
+}
+
+$navSubmit.on('click', navSubmitClick);
+
+function navFavoritesClick (){
+  $('.far.fa-star').closest('li').hide();
+}
+
+$navFavorites.on('click', navFavoritesClick)
+
+function navMyStoriesClick(){
+  storyList.stories.forEach((story) =>{
+    if(story.username !== currentUser.username) {
+      $('#'+story.storyId).hide()
+    }
+    else {
+      $('#'+story.storyId).find('.trash-can').show()
+    }
+  })
+}
+
+$navMyStories.on('click', navMyStoriesClick)
+

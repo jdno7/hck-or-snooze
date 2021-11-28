@@ -1,5 +1,5 @@
 "use strict";
-
+const userFavs = [];
 // global to hold the User instance of the currently-logged-in user
 let currentUser;
 
@@ -25,6 +25,7 @@ async function login(evt) {
 
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
+  // getFavorites();
 }
 
 $loginForm.on("submit", login);
@@ -80,6 +81,7 @@ async function checkForRememberedUser() {
 
   // try to log in with these credentials (will be null if login failed)
   currentUser = await User.loginViaStoredCredentials(token, username);
+  // getFavorites();
 }
 
 /** Sync current user information to localStorage.
@@ -113,4 +115,96 @@ function updateUIOnUserLogin() {
   $allStoriesList.show();
 
   updateNavOnLogin();
+  getFavorites();
 }
+
+async function addFavorite(evt){
+ const storyId = evt.target.closest('li').id;
+//  console.log(storyId)
+ const token = currentUser.loginToken
+//  console.log (evt.target.id)
+ const postFavResponse = await axios.post(`https://hack-or-snooze-v3.herokuapp.com/users/${currentUser.username}/favorites/${storyId}`, {token});
+ userFavs.length = 0;
+ const favsArr = postFavResponse.data.user.favorites;
+ favsArr.forEach(fav => userFavs.push(fav));
+ console.log(userFavs)
+
+}
+
+async function addFavorite(evt){
+ 
+    console.log(evt.target.className)
+    if (evt.target.className === 'fas fa-star'){
+     await removeFavorite(evt);
+     return;
+    }
+    
+ const storyId = evt.target.closest('li').id;
+ evt.target.className = 'fas fa-star';
+ 
+ const token = currentUser.loginToken
+//  console.log (evt.target.id)
+ const postFavResponse = await axios.post(`https://hack-or-snooze-v3.herokuapp.com/users/${currentUser.username}/favorites/${storyId}`, {token});
+ userFavs.length = 0;
+ const favsArr = postFavResponse.data.user.favorites;
+ favsArr.forEach(fav => userFavs.push(fav));
+//  console.log(userFavs)
+}
+
+
+async function removeFavorite(evt){
+  const storyId = evt.target.closest('li').id;
+  // console.log(storyId);
+   
+  const token = {
+    token: currentUser.loginToken
+  }
+  
+ evt.target.className = 'far fa-star';
+
+ const deleteFavResponse = await axios.delete(`https://hack-or-snooze-v3.herokuapp.com/users/${currentUser.username}/favorites/${storyId}`,{data: token});
+
+    userFavs.length = 0;
+ const favsArr = deleteFavResponse.data.user.favorites;
+ favsArr.forEach(fav => userFavs.push(fav));
+//  console.log(userFavs)
+}
+
+
+async function getFavorites(evt){
+ await currentUser.favorites;
+ currentUser.favorites.forEach((fav) => {
+   userFavs.push(fav);
+   const id = fav.storyId
+   $(`#${id}`).find('i').removeClass().addClass('fas fa-star')
+  //  console.log($(`#${id}`))
+ })
+    // fav.className = ('fas fa-star')
+    // $('#'+ fav).addClass()
+  //  console.log ($(`#${story.storyId}`))
+ 
+}
+
+// document.getElementById('e85f6d65-d49e-4529-b1c4-41abc62e558e')
+
+
+
+// create getFavs Function to update favorites UI on login
+
+$allStoriesList.on('click', '.star', addFavorite);
+
+// $allStoriesList.on('click', '.fas', removeFavorite);
+
+
+async function removeStory(evt){
+  const storyId = $(evt.target).parent().parent().attr('id');
+  // console.log(storyId);
+  $(evt.target).parent().parent().remove()
+  const token = {
+    token: currentUser.loginToken
+  }
+  const deleteStoryResponse = await axios.delete(`https://hack-or-snooze-v3.herokuapp.com/stories/${storyId}`,{data: token});
+}
+
+$allStoriesList.on('click', '#can', removeStory)
+

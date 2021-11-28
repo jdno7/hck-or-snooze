@@ -25,6 +25,12 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        <span class="trash-can" id="can" style="display: none">
+          <i class="far fa-trash-alt"></i>
+        </span>
+        <span class="star">
+          <i class="far fa-star"></i>
+        </span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -50,3 +56,24 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+// Ads a new Story to the stories API and reloads the page to Update UI and hide submit form
+ async function addNewUserStory(evt){
+  const title = $('#story-title').val();
+  const author = $('#story-author').val();
+  const url = $('#story-url').val();
+
+  const userStory = {
+    title,
+    author,
+    url
+  }
+
+  await storyList.addStory(currentUser, userStory);
+
+  location.reload();
+
+}
+
+$adStoryForm.on('submit', addNewUserStory);
+
