@@ -24,8 +24,8 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    const urlObj = new URL(this.url)
+    return urlObj.host;
   }
 }
 
@@ -133,7 +133,7 @@ class User {
    */
 
   static async signup(username, password, name) {
-    const response = await axios({
+    try { const response = await axios({
       url: `${BASE_URL}/signup`,
       method: "POST",
       data: { user: { username, password, name } },
@@ -150,7 +150,14 @@ class User {
         ownStories: user.stories
       },
       response.data.token
-    );
+    );}
+    catch (error){
+      let err = '';
+      err += error;
+      if (err.includes(409)){
+      alert('Username already Exists');
+      return;}
+    }
   }
 
   /** Login in user with API, make User instance & return it.

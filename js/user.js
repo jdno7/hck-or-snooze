@@ -120,9 +120,9 @@ function updateUIOnUserLogin() {
 
 async function addFavorite(evt){
  const storyId = evt.target.closest('li').id;
-//  console.log(storyId)
+
  const token = currentUser.loginToken
-//  console.log (evt.target.id)
+
  const postFavResponse = await axios.post(`https://hack-or-snooze-v3.herokuapp.com/users/${currentUser.username}/favorites/${storyId}`, {token});
  userFavs.length = 0;
  const favsArr = postFavResponse.data.user.favorites;
@@ -143,12 +143,12 @@ async function addFavorite(evt){
  evt.target.className = 'fas fa-star';
  
  const token = currentUser.loginToken
-//  console.log (evt.target.id)
+
  const postFavResponse = await axios.post(`https://hack-or-snooze-v3.herokuapp.com/users/${currentUser.username}/favorites/${storyId}`, {token});
  userFavs.length = 0;
  const favsArr = postFavResponse.data.user.favorites;
  favsArr.forEach(fav => userFavs.push(fav));
-//  console.log(userFavs)
+
 }
 
 
@@ -177,24 +177,13 @@ async function getFavorites(evt){
    userFavs.push(fav);
    const id = fav.storyId
    $(`#${id}`).find('i').removeClass().addClass('fas fa-star')
-  //  console.log($(`#${id}`))
+  
  })
-    // fav.className = ('fas fa-star')
-    // $('#'+ fav).addClass()
-  //  console.log ($(`#${story.storyId}`))
+  
  
 }
 
-// document.getElementById('e85f6d65-d49e-4529-b1c4-41abc62e558e')
-
-
-
-// create getFavs Function to update favorites UI on login
-
 $allStoriesList.on('click', '.star', addFavorite);
-
-// $allStoriesList.on('click', '.fas', removeFavorite);
-
 
 async function removeStory(evt){
   const storyId = $(evt.target).parent().parent().attr('id');
