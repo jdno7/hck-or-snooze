@@ -5,6 +5,7 @@
 }
 
 .stories-list > li {
+  position: relative;
   color: gray;
   font-size: 0.8rem;
   margin: 10px 0;
@@ -36,4 +37,15 @@
 
 .story-user {
   display: block;
+}
+
+#edit-story-button{
+  position: absolute;
+  right: 0px;
+  top: 0;
+  background-color: rgba(255, 94, 0, 0.267);
+  display: inline-block;
+  border-radius: 5px;
+  /* margin-right: 0; */
+
 }

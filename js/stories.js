@@ -34,9 +34,32 @@ function generateStoryMarkup(story) {
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
+
         <small class="story-hostname">(${hostName})</small>
         <small class="story-author">by ${story.author}</small>
         <small class="story-user">posted by ${story.username}</small>
+        
+        <button  style="display: none" id="edit-story-button" value="${story.storyId}">Edit</button>
+        
+        <form
+          action=""
+          id="${story.storyId}"
+          class="hidden">
+          <h4>Edit Story</h4>
+          <div class="login-input">
+          <label for="title">Title</label>
+          <input id="story-title" autocapitalize="words">
+          </div>
+          <div class="login-input">
+          <label for="story-author">Author</label>
+          <input id="story-author" autocapitalize="words">
+          </div>
+          <div class="story-url">
+          <label for="story-url">URL</label>
+          <input id="story-url">
+          </div>
+          <button id="edit-story-submit" type="submit" value="${story.storyId}">Submit Changes</button>
+        </form>
       </li>
     `);
 }

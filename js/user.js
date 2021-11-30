@@ -118,26 +118,20 @@ function updateUIOnUserLogin() {
   getFavorites();
 }
 
+// async function addFavorite(evt){
+//  const storyId = evt.target.closest('li').id;
+
+//  const token = currentUser.loginToken
+
+//  const postFavResponse = await axios.post(`https://hack-or-snooze-v3.herokuapp.com/users/${currentUser.username}/favorites/${storyId}`, {token});
+//  userFavs.length = 0;
+//  const favsArr = postFavResponse.data.user.favorites;
+//  favsArr.forEach(fav => userFavs.push(fav));
+//  console.log(userFavs)
+
+// }
+
 async function addFavorite(evt){
- const storyId = evt.target.closest('li').id;
-
- const token = currentUser.loginToken
-
- const postFavResponse = await axios.post(`https://hack-or-snooze-v3.herokuapp.com/users/${currentUser.username}/favorites/${storyId}`, {token});
- userFavs.length = 0;
- const favsArr = postFavResponse.data.user.favorites;
- favsArr.forEach(fav => userFavs.push(fav));
- console.log(userFavs)
-
-}
-
-async function addFavorite(evt){
- 
-    console.log(evt.target.className)
-    if (evt.target.className === 'fas fa-star'){
-     await removeFavorite(evt);
-     return;
-    }
     
  const storyId = evt.target.closest('li').id;
  evt.target.className = 'fas fa-star';
@@ -176,14 +170,15 @@ async function getFavorites(evt){
  currentUser.favorites.forEach((fav) => {
    userFavs.push(fav);
    const id = fav.storyId
-   $(`#${id}`).find('i').removeClass().addClass('fas fa-star')
+   $(`#${id}`).find('.far.fa-star').removeClass().addClass('fas fa-star')
   
  })
   
  
 }
 
-$allStoriesList.on('click', '.star', addFavorite);
+$allStoriesList.on('click', '.far.fa-star', addFavorite);
+$allStoriesList.on('click', '.fas.fa-star', removeFavorite);
 
 async function removeStory(evt){
   const storyId = $(evt.target).parent().parent().attr('id');
@@ -193,7 +188,56 @@ async function removeStory(evt){
     token: currentUser.loginToken
   }
   const deleteStoryResponse = await axios.delete(`https://hack-or-snooze-v3.herokuapp.com/stories/${storyId}`,{data: token});
+  location.reload();
 }
 
-$allStoriesList.on('click', '#can', removeStory)
+$allStoriesList.on('click', '.fa-trash-alt', removeStory)
 
+// - Opening/closing an edit form for the Story by clicking the edit button from the My Stories display
+// - Populating the current information into the edit fields
+async function editStoryClick(evt){
+  const $editForm = $(evt.target).next();
+  const $titleInput = $(evt.target).next().find('input').eq(0);
+  const $authorInput = $(evt.target).next().find('input').eq(1);
+  const $urlInput = $(evt.target).next().find('input').eq(2);
+  const $storyId = $(evt.target).val();
+ 
+  if($editForm.hasClass('hidden')) {
+    $editForm.removeClass('hidden');
+    const story = await StoryList.getStory($storyId);
+
+      $titleInput.val(story.title)
+      $authorInput.val(story.author)
+      $urlInput.val(story.url)
+    
+}
+  else {
+    $editForm.addClass('hidden');
+}
+ 
+}
+
+$allStoriesList.on('click', '#edit-story-button', editStoryClick);
+
+// Submitting and patching existing story with new inputs values
+// refreshing page to update UI
+async function editStorySubmitClick (evt) {
+  evt.preventDefault();
+  const $storyId = $(evt.target).val();
+  const title = $(evt.target).parent().find('input').eq(0).val();
+  const author = $(evt.target).parent().find('input').eq(1).val();
+  const url = $(evt.target).parent().find('input').eq(2).val();
+
+  const newStory = {
+    title,
+    author,
+    url
+  }
+
+  await StoryList.editStory(currentUser, $storyId, newStory);
+
+  location.reload();
+  
+}
+
+$allStoriesList.on('click', '#edit-story-submit', editStorySubmitClick);

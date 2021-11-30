@@ -8,7 +8,7 @@
 
 function navAllStories(evt) {
   console.debug("navAllStories", evt);
-  hidePageComponents();
+  // hidePageComponents();
   putStoriesOnPage();
 }
 
@@ -40,7 +40,7 @@ function updateNavOnLogin() {
 
 function navSubmitClick(evt){
   // console.debug('navSubmitClick' evt)
-  $adStoryForm.show();
+  $adStoryForm.toggleClass('hidden', 'addOrRemove');
 }
 
 $navSubmit.on('click', navSubmitClick);
@@ -57,10 +57,13 @@ function navMyStoriesClick(){
       $('#'+story.storyId).hide()
     }
     else {
-      $('#'+story.storyId).find('.trash-can').show()
+      $('#'+story.storyId).find('.trash-can').show();
+      $('#'+story.storyId).find('#edit-story-button').show()
+      
     }
   })
 }
 
 $navMyStories.on('click', navMyStoriesClick)
+
 

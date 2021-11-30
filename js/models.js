@@ -66,6 +66,13 @@ class StoryList {
     return new StoryList(stories);
   }
 
+  static async getStory(storyId){
+      const response = await axios ({
+        url: `${BASE_URL}/stories/${storyId}`,
+        method: "GET",
+      });
+      return response.data.story;
+  }
   /** Adds story data to API, makes a Story instance, adds it to story list.
    * - user - the current instance of User who will post the story
    * - obj of {title, author, url}
@@ -78,7 +85,17 @@ class StoryList {
   //  this.url = url;
   //  this.username = username;
   //  this.createdAt = createdAt;
- 
+
+  static async editStory(user, storyId, newStory) {
+    
+    const response = await axios({
+      url: `${BASE_URL}/stories/${storyId}`,
+      method: "PATCH",
+      data: { token: user.loginToken, story:  newStory }
+    });
+
+  }
+
   async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
     const response = await axios({
@@ -217,3 +234,5 @@ class User {
     }
   }
 }
+
+
