@@ -35,22 +35,25 @@ function updateNavOnLogin() {
   $navUserProfile.text(`${currentUser.username}`).show();
   $('.nav-left').show();
 }
-
+// My Code 
 // when a user clicks on the nav Submit link we show ad-story-form
-
 function navSubmitClick(evt){
-  // console.debug('navSubmitClick' evt)
   $adStoryForm.toggleClass('hidden', 'addOrRemove');
 }
 
 $navSubmit.on('click', navSubmitClick);
-
+// My Code when a user clicks the "Favorites" Navigation Filter
+// Hides all stories that arent a user favorite
 function navFavoritesClick (){
   $('.far.fa-star').closest('li').hide();
 }
 
 $navFavorites.on('click', navFavoritesClick)
 
+// My Code 
+// When logged in user clicks on th"my Stories" nav link 
+// Hide all other stories 
+// show the Trash Can delete icon on their filtered stories
 function navMyStoriesClick(){
   storyList.stories.forEach((story) =>{
     if(story.username !== currentUser.username) {

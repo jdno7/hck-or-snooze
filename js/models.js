@@ -22,7 +22,7 @@ class Story {
   }
 
   /** Parses hostname out of URL and returns it. */
-
+//  My code 
   getHostName() {
     const urlObj = new URL(this.url)
     return urlObj.host;
@@ -65,7 +65,8 @@ class StoryList {
     // build an instance of our own class using the new array of stories
     return new StoryList(stories);
   }
-
+// My Code
+// used in user.js editStoryClick to pre-poluate an edit story form with the current API information
   static async getStory(storyId){
       const response = await axios ({
         url: `${BASE_URL}/stories/${storyId}`,
@@ -73,19 +74,9 @@ class StoryList {
       });
       return response.data.story;
   }
-  /** Adds story data to API, makes a Story instance, adds it to story list.
-   * - user - the current instance of User who will post the story
-   * - obj of {title, author, url}
-   *
-   * Returns the new Story instance
-   */
-  //  this.storyId = storyId;
-  //  this.title = title;
-  //  this.author = author;
-  //  this.url = url;
-  //  this.username = username;
-  //  this.createdAt = createdAt;
-
+// My code 
+// Updating the users story 
+// This is used user.js editStorySubmitClick 
   static async editStory(user, storyId, newStory) {
     
     const response = await axios({
@@ -93,9 +84,11 @@ class StoryList {
       method: "PATCH",
       data: { token: user.loginToken, story:  newStory }
     });
-
+    return response;
+    
   }
-
+// My Code to add a user story to the API via a Nav Submit Form
+// used in stories.js addNewUserStory
   async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
     const response = await axios({

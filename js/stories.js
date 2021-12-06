@@ -18,7 +18,8 @@ async function getAndShowStoriesOnStart() {
  *
  * Returns the markup for the story.
  */
-
+// My Code (Some) 
+//  I added some parameters / hidden elements to this pre built mark-up to fascilitate favorite/delete/edit icont elements
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
@@ -80,7 +81,7 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
-// Ads a new Story to the stories API and reloads the page to Update UI and hide submit form
+// Ads a new Story to the stories API  from the "Submit" Form and reloads the page to Update UI and hide submit form
  async function addNewUserStory(evt){
   const title = $('#story-title').val();
   const author = $('#story-author').val();

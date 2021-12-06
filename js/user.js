@@ -118,19 +118,9 @@ function updateUIOnUserLogin() {
   getFavorites();
 }
 
-// async function addFavorite(evt){
-//  const storyId = evt.target.closest('li').id;
-
-//  const token = currentUser.loginToken
-
-//  const postFavResponse = await axios.post(`https://hack-or-snooze-v3.herokuapp.com/users/${currentUser.username}/favorites/${storyId}`, {token});
-//  userFavs.length = 0;
-//  const favsArr = postFavResponse.data.user.favorites;
-//  favsArr.forEach(fav => userFavs.push(fav));
-//  console.log(userFavs)
-
-// }
-
+// My Code 
+// updating the API user favorites list
+// Updating UI to indicate favorite
 async function addFavorite(evt){
     
  const storyId = evt.target.closest('li').id;
@@ -145,7 +135,9 @@ async function addFavorite(evt){
 
 }
 
-
+// My code 
+// // updating (removing) favorite the API user favorites list
+// Updating UI to indicate favorites
 async function removeFavorite(evt){
   const storyId = evt.target.closest('li').id;
   // console.log(storyId);
@@ -161,10 +153,11 @@ async function removeFavorite(evt){
     userFavs.length = 0;
  const favsArr = deleteFavResponse.data.user.favorites;
  favsArr.forEach(fav => userFavs.push(fav));
-//  console.log(userFavs)
 }
 
-
+// My Code 
+// referecning the user favorites list from the API when logging in and page load to update UI on favorited stories for that user
+// I added this function to the pre-built updateUIOnLogin() function above
 async function getFavorites(evt){
  await currentUser.favorites;
  currentUser.favorites.forEach((fav) => {
@@ -176,10 +169,13 @@ async function getFavorites(evt){
   
  
 }
-
+// My Code 
+// events using the above functions
 $allStoriesList.on('click', '.far.fa-star', addFavorite);
 $allStoriesList.on('click', '.fas.fa-star', removeFavorite);
-
+// My Code 
+// Allowing a User to Remove One of their stories 
+// removing from API and updating UI 
 async function removeStory(evt){
   const storyId = $(evt.target).parent().parent().attr('id');
   // console.log(storyId);
@@ -193,6 +189,7 @@ async function removeStory(evt){
 
 $allStoriesList.on('click', '.fa-trash-alt', removeStory)
 
+// My Code 
 // - Opening/closing an edit form for the Story by clicking the edit button from the My Stories display
 // - Populating the current information into the edit fields
 async function editStoryClick(evt){
@@ -219,6 +216,7 @@ async function editStoryClick(evt){
 
 $allStoriesList.on('click', '#edit-story-button', editStoryClick);
 
+// My Code 
 // Submitting and patching existing story with new inputs values
 // refreshing page to update UI
 async function editStorySubmitClick (evt) {
